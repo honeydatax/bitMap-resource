@@ -36,12 +36,22 @@ struct BM{
 	struct lines liness[64];
 };
 void setBMPHead(FILE *f1,int w,int h){
+	int ajust=0;
+	int ajust2=0;
 	char *bmid="BM";
 	struct headerBMP hb;
 	//bmp -------
 //	hb->ID[0]='B';
 //	hb->ID[1]='M';
-	hb.size=54+(w*3)*h;
+	ajust=w/8;
+	if(ajust*8==w){
+		ajust2=0;
+	printf("%d\n",ajust2);	
+	}else{
+		ajust2=(ajust+1*8)-(ajust*8);
+		printf("%d\n",ajust2);	
+	}
+	hb.size=54+(w*3+ajust2)*h;
 	hb.application=0;
 	hb.pos=54;
 	//dib -------
@@ -53,7 +63,7 @@ void setBMPHead(FILE *f1,int w,int h){
 	hb.nPixel1=24;
 	hb.nPixel2=0;
 	hb.compressions=0;
-	hb.rawSize=(w*3)*h;
+	hb.rawSize=(w*3+ajust2)*h;
 	hb.rw=2835;
 	hb.rh=2835;
 	hb.colors=0;
@@ -76,7 +86,6 @@ int main(int argc,char *argv[]){
 	
 		if(f1!=NULL){
 			setBMPHead(f1,64,64);
-			printf("%d\n",(int)ftell(f1));
 			for(i=0;i<64;i++){
 				for(ii=0;ii<64;ii++){
 						bm.liness[i].px[ii].b=255;
