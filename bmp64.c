@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#define pixess 64
+#define divss 256/pixess
 struct headerBMP{
 	int size;
 	int application;
@@ -30,10 +31,10 @@ struct lpixel {
 	char bb;
 };
 struct lines{
-	struct pixel px[64];
+	struct pixel px[pixess];
 };
 struct BM{
-	struct lines liness[64];
+	struct lines liness[pixess];
 };
 void setBMPHead(FILE *f1,int w,int h){
 	int ajust=0;
@@ -42,16 +43,8 @@ void setBMPHead(FILE *f1,int w,int h){
 	struct headerBMP hb;
 	//bmp -------
 //	hb->ID[0]='B';
-//	hb->ID[1]='M';
-	ajust=w/8;
-	if(ajust*8==w){
-		ajust2=0;
-	printf("%d\n",ajust2);	
-	}else{
-		ajust2=(ajust+1*8)-(ajust*8);
-		printf("%d\n",ajust2);	
-	}
-	hb.size=54+(w*3+ajust2)*h;
+//	hb->ID[1]='M';8
+	hb.size=54+(w*3)*h;
 	hb.application=0;
 	hb.pos=54;
 	//dib -------
@@ -63,7 +56,7 @@ void setBMPHead(FILE *f1,int w,int h){
 	hb.nPixel1=24;
 	hb.nPixel2=0;
 	hb.compressions=0;
-	hb.rawSize=(w*3+ajust2)*h;
+	hb.rawSize=(w*3)*h;
 	hb.rw=2835;
 	hb.rh=2835;
 	hb.colors=0;
@@ -85,12 +78,12 @@ int main(int argc,char *argv[]){
 	f1=fopen(files,"w");
 	
 		if(f1!=NULL){
-			setBMPHead(f1,64,64);
-			for(i=0;i<64;i++){
-				for(ii=0;ii<64;ii++){
+			setBMPHead(f1,pixess,pixess);
+			for(i=0;i<pixess;i++){
+				for(ii=0;ii<pixess;ii++){
 						bm.liness[i].px[ii].b=255;
-						bm.liness[i].px[ii].g=i*4;
-						bm.liness[i].px[ii].r=i*4;
+						bm.liness[i].px[ii].g=i*divss;
+						bm.liness[i].px[ii].r=i*divss;
 				}
 			}
 			fwrite(&bm,sizeof(bm),1,f1);
