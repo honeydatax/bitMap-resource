@@ -5496,4 +5496,40 @@ void ball(struct headerBMP *hb, void *bm,int xx,int yy ,int rr,char bcc,char gcc
 	}
 
 }
+void gputc(struct headerBMP *hb, void *bm,int x,int y,char b,char g,char r,char c){
+	char bits;
+	char bit;
+	int scrolls;
+	int iii=0;
+	int ii=0;
+	int xx=x;
+	int yy=y;
+	int aa=0;
+	aa=c*8;
+	for (ii=0;ii<8;ii++){
+		scrolls=128;
+		bits=font8x8[aa];
+		for (iii=0;iii<8;iii++){
+			if ((bits & scrolls)!=0){
+				setPixel(hb,bm,xx,yy,b,g,r);
+			}
+			xx++;
+			scrolls=scrolls/2;
+		}
+		xx=x;
+		aa++;
+		yy++;
+	}
+
+} 
+void gputs(struct headerBMP *hb, void *bm,int x,int y,char b,char g,char r,char *c){
+	int ii=0;
+	int xx=x;
+	int yy=y;
+	while(c[ii]!=0){
+		gputc(hb,bm,xx,yy,b,g,r,c[ii]);
+		xx=xx+8;
+		ii++;
+	}
+}
 
