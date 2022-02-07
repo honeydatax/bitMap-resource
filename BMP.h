@@ -1,6 +1,8 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 
 //gcc -o sample1 sample1.c -lm
 #define FONTDATAMAX 2048
@@ -5183,6 +5185,7 @@ unsigned char font8x8[FONTDATAMAX] = {
 
 
 };
+//----------------------------------------------
 void saveBMP(char *files,struct headerBMP *hb, char *bm){
 	char *bmid="BM";	
 	FILE *f1;
@@ -5531,5 +5534,39 @@ void gputs(struct headerBMP *hb, void *bm,int x,int y,char b,char g,char r,char 
 		xx=xx+8;
 		ii++;
 	}
+}
+char *loadBMP(char *files,struct headerBMP *hb){
+	char bmid[10];
+	char *bm;
+	FILE *f1;
+	bm=NULL;
+	if(files!=NULL){
+		f1=fopen(files,"r");
+		if(f1!=NULL){
+				fseek(f1,0,SEEK_SET);
+				bmid[0]=0;
+				bmid[1]=0;
+				fread(bmid,2,1,f1);
+				bmid[2]=0;
+				if(strcmp(bmid,"BM")!=0){
+					if(f1!=NULL)fclose(f1);
+					return NULL;
+				}
+				fread(hb,52,1,f1);
+				if(hb->sizes!=40 || hb->pos!=54 || hb->nPixel1!=24 || hb->w>641 || hb->h>481 || hb->nPlanes1!=1 || 	hb->colors!=0 || hb->importColors!=0){
+					if(f1!=NULL)fclose(f1);
+					return NULL;
+				}
+				bm=malloc((hb->w * 3)* hb->h + 20);
+				if(bm==NULL){
+					if(f1!=NULL)fclose(f1);
+					return NULL;
+				}
+				fread(bm,(hb->w * 3)* hb->h,1,f1);
+				fclose(f1);
+				return bm;
+		}
+	}
+	return NULL;
 }
 
