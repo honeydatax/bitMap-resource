@@ -98,7 +98,7 @@ void vline(struct headerBMP *hb, void *bm,int x,int y,int y2,int b,int g,int r){
 	if(yy<0)yy=0;
 	if(xx>=hb->w)xx=hb->w-1;
 	if(yy>=hb->h)yy=hb->h-1;
-	count1=y2-yy;
+	count1=y2;
 	if (count1+yy>=hb->h)count1=hb->h-1-yy;
 	for(nexts1=yy;nexts1<count1+yy;nexts1++){
 		bmms->liness[hb->h-nexts1-1].px[xx].b=b;
@@ -123,7 +123,7 @@ void hline(struct headerBMP *hb, void *bm,int x,int y,int x2,int b,int g,int r){
 	if(yy<0)yy=0;
 	if(xx>=hb->w)xx=hb->w-1;
 	if(yy>=hb->h)yy=hb->h-1;
-	count1=x2-xx;
+	count1=x2;
 	if (count1+xx>=hb->w)count1=hb->w-1-xx;
 	for(nexts1=xx;nexts1<count1+xx;nexts1++){
 		bmms->liness[hb->h-yy-1].px[nexts1].b=b;
@@ -131,4 +131,39 @@ void hline(struct headerBMP *hb, void *bm,int x,int y,int x2,int b,int g,int r){
 		bmms->liness[hb->h-yy-1].px[nexts1].r=r;
 	}
 
+}
+void box(struct headerBMP *hb, void *bm,int x,int y,int x2,int y2,int b,int g,int r){
+	int xx=x;
+	int yy=y;
+	int count1=1;
+	int count2=1;
+	int nexts1=1;
+	int nexts2=1;
+	struct lines{
+	struct pixel px[hb->w];
+	};
+	struct BM{
+	struct lines liness[hb->h];
+	};
+	struct BM *bmms=bm;
+	if(xx<0)xx=0;
+	if(yy<0)yy=0;
+	if(xx>=hb->w)xx=hb->w-1;
+	if(yy>=hb->h)yy=hb->h-1;
+	count1=x2;
+	count2=y2;
+	if (count1+xx>=hb->w)count1=hb->w-1-xx;
+	if (count2+yy>=hb->h)count2=hb->h-1-yy;
+	for(nexts2=yy;nexts2<count2+yy;nexts2++){
+		for(nexts1=xx;nexts1<count1+xx;nexts1++){
+			bmms->liness[hb->h-nexts2-1].px[nexts1].b=b;
+			bmms->liness[hb->h-nexts2-1].px[nexts1].g=g;
+			bmms->liness[hb->h-nexts2-1].px[nexts1].r=r;
+		}
+		
+	}
+
+}
+void clears(struct headerBMP *hb, void *bm,int b,int g,int r){
+	box(hb,bm,0,0,hb->w-1,hb->h-1,b,g,r);
 }
