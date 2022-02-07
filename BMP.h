@@ -5228,7 +5228,7 @@ void vline(struct headerBMP *hb, void *bm,int x,int y,int y2,int b,int g,int r){
 	if(yy<0)yy=0;
 	if(xx>=hb->w)xx=hb->w-1;
 	if(yy>=hb->h)yy=hb->h-1;
-	count1=y2;
+	count1=y2-yy;
 	if (count1+yy>=hb->h)count1=hb->h-1-yy;
 	for(nexts1=yy;nexts1<count1+yy;nexts1++){
 		bmms->liness[hb->h-nexts1-1].px[xx].b=b;
@@ -5253,7 +5253,7 @@ void hline(struct headerBMP *hb, void *bm,int x,int y,int x2,int b,int g,int r){
 	if(yy<0)yy=0;
 	if(xx>=hb->w)xx=hb->w-1;
 	if(yy>=hb->h)yy=hb->h-1;
-	count1=x2;
+	count1=x2-xx;
 	if (count1+xx>=hb->w)count1=hb->w-1-xx;
 	for(nexts1=xx;nexts1<count1+xx;nexts1++){
 		bmms->liness[hb->h-yy-1].px[nexts1].b=b;
