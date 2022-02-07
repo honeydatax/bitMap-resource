@@ -107,3 +107,28 @@ void vline(struct headerBMP *hb, void *bm,int x,int y,int y2,int b,int g,int r){
 	}
 
 }
+void hline(struct headerBMP *hb, void *bm,int x,int y,int x2,int b,int g,int r){
+	int xx=x;
+	int yy=y;
+	int count1=1;
+	int nexts1=1;
+	struct lines{
+	struct pixel px[hb->w];
+	};
+	struct BM{
+	struct lines liness[hb->h];
+	};
+	struct BM *bmms=bm;
+	if(xx<0)xx=0;
+	if(yy<0)yy=0;
+	if(xx>=hb->w)xx=hb->w-1;
+	if(yy>=hb->h)yy=hb->h-1;
+	count1=x2-xx;
+	if (count1+xx>=hb->w)count1=hb->w-1-xx;
+	for(nexts1=xx;nexts1<count1+xx;nexts1++){
+		bmms->liness[hb->h-yy-1].px[nexts1].b=b;
+		bmms->liness[hb->h-yy-1].px[nexts1].g=g;
+		bmms->liness[hb->h-yy-1].px[nexts1].r=r;
+	}
+
+}
