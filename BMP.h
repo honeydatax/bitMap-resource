@@ -314,4 +314,11 @@ void line(struct headerBMP *hb, void *bm,int x,int y,int x2,int y2,char b,char g
 	if (i==4)lineR(hb,bm,x2,y2,x,y,b,g,r);
 	if (i==5)lineL(hb,bm,x2,y2,x,y,b,g,r);
 }
+void rectangle(struct headerBMP *hb, void *bm,int x,int y,int x2,int y2,char b,char g,char r){
+line(hb,bm,x,y,x2,y,b,g,r);
+line(hb,bm,x,y2,x2,y2,b,g,r);
+line(hb,bm,x,y,x,y2,b,g,r);
+line(hb,bm,x2,y,x2,y2,b,g,r);
+}
+
 
