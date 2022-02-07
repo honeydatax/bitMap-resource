@@ -76,9 +76,34 @@ void setPixel(struct headerBMP *hb, void *bm,int x,int y,int b,int g,int r){
 	};
 	struct BM *bmms=bm;
 	if(x<hb->w && y<hb->h && y>-1 && x>-1){
-		bmms->liness[hb->h-y-1].px[hb->w-x-1].b=b;
-		bmms->liness[hb->h-y-1].px[hb->w-x-1].g=g;
-		bmms->liness[hb->h-y-1].px[hb->w-x-1].r=r;
+		bmms->liness[hb->h-y-1].px[x].b=b;
+		bmms->liness[hb->h-y-1].px[x].g=g;
+		bmms->liness[hb->h-y-1].px[x].r=r;
+	}
+
+}
+void vline(struct headerBMP *hb, void *bm,int x,int y,int y2,int b,int g,int r){
+	int xx=x;
+	int yy=y;
+	int count1=1;
+	int nexts1=1;
+	struct lines{
+	struct pixel px[hb->w];
+	};
+	struct BM{
+	struct lines liness[hb->h];
+	};
+	struct BM *bmms=bm;
+	if(xx<0)xx=0;
+	if(yy<0)yy=0;
+	if(xx>=hb->w)xx=hb->w-1;
+	if(yy>=hb->h)yy=hb->h-1;
+	count1=y2-yy;
+	if (count1+yy>=hb->h)count1=hb->h-1-yy;
+	for(nexts1=yy;nexts1<count1+yy;nexts1++){
+		bmms->liness[hb->h-nexts1-1].px[xx].b=b;
+		bmms->liness[hb->h-nexts1-1].px[xx].g=g;
+		bmms->liness[hb->h-nexts1-1].px[xx].r=r;
 	}
 
 }
