@@ -5609,4 +5609,64 @@ void saveArrayMap(char *files,struct headerBMP *hb, void *bm){
 		}
 	}
 }
+char *loadMapArray(char *files,struct headerBMP *hb){
+	char bmid[12];
+	struct arrayMaps AM;
+	char *bm;
+	char *bmbm;
+	int n=0;
+	FILE *f1;
+	char bbbb;
+	bm=NULL;
+	if(files!=NULL){
+		f1=fopen(files,"r");
+		if(f1!=NULL){
+				fseek(f1,0,SEEK_SET);
+				bmid[0]=0;
+				bmid[1]=0;
+				fread(bmid,9,1,f1);
+				bmid[10]=0;
+				if(strcmp(bmid,"MapArray")!=0){
+					if(f1!=NULL)fclose(f1);
+					return NULL;
+				}
+				fread(&AM,sizeof(AM),1,f1);
+				if(AM.bits!=32 || AM.w>641 || AM.h>481){
+					if(f1!=NULL)fclose(f1);
+					return NULL;
+				}
+				bm=malloc((AM.w * 3)* AM.h + 20);
+				if(bm==NULL){
+					if(f1!=NULL)fclose(f1);
+					return NULL;
+				}
+				bmbm=bm;
+				for(n=0;n<AM.h*AM.w;n++){
+					fread(bmbm,3,1,f1);
+					fread(&bbbb,1,1,f1);
+					bmbm=bmbm+3;
+				}
+				hb->size=54+(AM.w*3)*AM.h;
+				hb->application=0;
+				hb->pos=54;
+				//dib -------
+				hb->sizes=40;
+				hb->w=AM.w;
+				hb->h=AM.h;
+				hb->nPlanes1=1;
+				hb->nPlanes2=0;
+				hb->nPixel1=24;
+				hb->nPixel2=0;
+				hb->compressions=0;
+				hb->rawSize=(AM.w*3)*AM.h;
+				hb->rw=0;
+				hb->rh=0;
+				hb->colors=0;
+				hb->importColors=0;
+				fclose(f1);
+				return bm;
+		}
+	}
+	return NULL;
+}
 
