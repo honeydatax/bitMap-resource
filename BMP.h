@@ -7,6 +7,11 @@
 //gcc -o sample1 sample1.c -lm
 #define FONTDATAMAX 2048
 #define PI 3.1415927
+struct arrayMaps{
+	int w;
+	int h;
+	int bits;
+};
 struct headerBMP{
 	int size;
 	int application;
@@ -5568,5 +5573,40 @@ char *loadBMP(char *files,struct headerBMP *hb){
 		}
 	}
 	return NULL;
+}
+void saveArrayMap(char *files,struct headerBMP *hb, void *bm){
+	struct lines{
+	struct pixel px[hb->w];
+	};
+	struct BM{
+	struct lines liness[hb->h];
+	};
+	struct BM *bmms=bm;
+	char *bmid="MapArray";	
+	struct arrayMaps AM;
+	int n=0;
+	int nn=0;
+	int nnn=0;
+	FILE *f1;
+	if(files!=NULL){
+		f1=fopen(files,"w");
+		if(f1!=NULL){
+				AM.w=hb->w;
+				AM.h=hb->h;
+				AM.bits=32;
+				fseek(f1,0,SEEK_SET);
+				fwrite(bmid,9,1,f1);
+				fwrite(&AM,sizeof(AM),1,f1);
+				for(n=0;n<AM.h;n++){
+					for(nn=0;nn<AM.w;nn++){
+						nnn=(int)(bmms->liness[hb->h-n-1].px[nn].b);
+						nnn=nnn | ((int)bmms->liness[hb->h-n-1].px[nn].g >>8);
+						nnn=nnn | ((int)bmms->liness[hb->h-n-1].px[nn].r >>16);
+						fwrite(&nnn,sizeof(int),1,f1);
+					}
+				}
+				fclose(f1);
+		}
+	}
 }
 
