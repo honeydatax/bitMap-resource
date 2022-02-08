@@ -5599,12 +5599,12 @@ void saveArrayMap(char *files,struct headerBMP *hb, void *bm){
 				fwrite(&AM,sizeof(AM),1,f1);
 				for(n=0;n<AM.h;n++){
 					for(nn=0;nn<AM.w;nn++){
-						nnn=(int)(bmms->liness[hb->h-n-1].px[nn].b);
-						nnn=nnn | ((int)bmms->liness[hb->h-n-1].px[nn].g >>8);
-						nnn=nnn | ((int)bmms->liness[hb->h-n-1].px[nn].r >>16);
+						nnn=((int)bmms->liness[n].px[nn].b);
+						nnn=nnn | ((int)bmms->liness[n].px[nn].g <<8);
+						nnn=nnn | ((int)bmms->liness[n].px[nn].r <<16);
 						fwrite(&nnn,sizeof(int),1,f1);
 					}
-				}
+				} 
 				fclose(f1);
 		}
 	}
