@@ -5443,14 +5443,18 @@ void line(struct headerBMP *hb, void *bm,int x,int y,int x2,int y2,char b,char g
 	if(x>x2 && y>y2)i=4;
 	if(x<x2 && y<y2)i=3;
 	if(x<x2 && y>y2)i=2;
-	if(y==y2)i=0;
-	if(x==x2)i=1;
+	if(y==y2 && x<x2)i=0;
+	if(x==x2 && y<y2)i=1;
+	if(y==y2 && x2<x)i=7;
+	if(x==x2 && y2<y)i=6;
 	if (i==0)hline(hb,bm,x,y,x2,b,g,r);
 	if (i==1)vline(hb,bm,x,y,y2,b,g,r);
 	if (i==2)lineL(hb,bm,x,y,x2,y2,b,g,r);
 	if (i==3)lineR(hb,bm,x,y,x2,y2,b,g,r);
 	if (i==4)lineR(hb,bm,x2,y2,x,y,b,g,r);
 	if (i==5)lineL(hb,bm,x2,y2,x,y,b,g,r);
+	if (i==7)hline(hb,bm,x2,y,x,b,g,r);
+	if (i==6)vline(hb,bm,x,y2,y,b,g,r);
 }
 void rectangle(struct headerBMP *hb, void *bm,int x,int y,int x2,int y2,char b,char g,char r){
 line(hb,bm,x,y,x2,y,b,g,r);
